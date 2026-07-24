@@ -12,7 +12,10 @@ const { title, category, summary, role, domain, status, year, coverImage } = ent
 
 const sections = headings
   .filter((h) => h.depth === 2)
-  .map((h, i) => ({ ...h, n: String(i + 1).padStart(2, '0') }));
+  .map((h, i) => {
+    const label = h.text.replace(/^\d+\s+/, '').trim();
+    return { ...h, n: String(i + 1).padStart(2, '0'), label };
+  });
 ---
 
 <BaseLayout title={`${title} — Cameron Bartholome`} description={summary}>
@@ -47,7 +50,7 @@ const sections = headings
           <div class="kicker">Contents</div>
           <div class="contents-list">
             {sections.map((s) => (
-              <a href={`#${s.slug}`}>{s.n} {s.text}</a>
+              <a href={`#${s.slug}`}><span class="toc-number">{s.n}</span><span class="toc-label">{s.label}</span></a>
             ))}
           </div>
         </aside>
@@ -120,7 +123,7 @@ const sections = headings
     font-size: clamp(38px, 6vw, 76px);
     line-height: 1;
     letter-spacing: -0.02em;
-    max-width: 14ch;
+    max-width: 100%;
     margin-bottom: 26px;
   }
 
@@ -128,7 +131,7 @@ const sections = headings
     font-size: clamp(17px, 1.5vw, 21px);
     line-height: 1.55;
     color: var(--color-ink-soft);
-    max-width: 640px;
+    max-width: 760px;
     text-wrap: pretty;
   }
 
@@ -139,6 +142,11 @@ const sections = headings
     margin-top: 38px;
     padding-top: 26px;
     border-top: 1px solid var(--color-line);
+  }
+
+  .meta-row > div {
+    flex: 1 1 180px;
+    min-width: 160px;
   }
 
   .meta-row .kicker {
@@ -161,7 +169,7 @@ const sections = headings
     aspect-ratio: 21 / 9;
     background: repeating-linear-gradient(135deg, #e7e4da, #e7e4da 11px, #eeece3 11px, #eeece3 22px);
     background-size: cover;
-    background-position: center;
+    background-position: center 30%;
     border: 1px solid var(--color-line);
     border-radius: 4px;
   }
@@ -225,11 +233,33 @@ const sections = headings
   }
 
   .contents-list a {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.03em;
+    display: inline-grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.3ch;
+    align-items: baseline;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
     color: var(--color-muted-2);
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  .toc-number {
+    flex-shrink: 0;
+    min-width: 2.6em;
+    text-align: left;
+    padding-right: 0.3ch;
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .toc-label {
+    min-width: 0;
   }
 
   .contents-list a:hover {
@@ -243,12 +273,20 @@ const sections = headings
     padding-left: clamp(20px, 3vw, 40px);
   }
 
-  .content :global(h2) {
+  .content :global(h1),
+  .content :global(h2),
+  .content :global(h3),
+  .content :global(h4),
+  .content :global(h5),
+  .content :global(h6) {
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(26px, 3.2vw, 40px);
     line-height: 1.05;
     letter-spacing: -0.015em;
+  }
+
+  .content :global(h2) {
+    font-size: clamp(26px, 3.2vw, 40px);
     margin: clamp(40px, 5vw, 64px) 0 16px;
     scroll-margin-top: 96px;
   }
@@ -257,10 +295,15 @@ const sections = headings
     margin-top: 0;
   }
 
-  .content :global(p) {
+  .content :global(p),
+  .content :global(li) {
+    font-family: var(--font-sans);
     font-size: clamp(16px, 1.2vw, 18px);
     line-height: 1.6;
     color: var(--color-ink-soft);
+  }
+
+  .content :global(p) {
     max-width: 680px;
     text-wrap: pretty;
     margin-bottom: 16px;
@@ -277,10 +320,40 @@ const sections = headings
   .content :global(li) {
     display: flex;
     gap: 12px;
-    font-size: 15.5px;
-    line-height: 1.5;
-    color: var(--color-ink-soft);
+    margin-bottom: 0;
     list-style: none;
+  }
+
+  .content :global(.system-breakdown) {
+    display: grid;
+    gap: 18px;
+    max-width: 780px;
+    margin-bottom: 24px;
+  }
+
+  .content :global(.system-breakdown-row) {
+    display: grid;
+    grid-template-columns: minmax(180px, 220px) 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .content :global(.system-breakdown-term) {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .content :global(.system-breakdown-desc) {
+    font-family: var(--font-sans);
+    color: var(--color-ink-soft);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 900px) {
+    .content :global(.system-breakdown-row) {
+      grid-template-columns: 1fr;
+    }
   }
 
   .content :global(li)::before {
