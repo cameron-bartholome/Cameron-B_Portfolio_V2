@@ -1,19 +1,49 @@
 ---
 const paragraphs = [
-  'I am a mechanical engineer who enjoys understanding the complete lifecycle of a product, not only how a component is designed, but how it is assembled, integrated, tested, maintained, and improved.',
-  'My background is in precision mechanical design, where I worked through the full development process from requirements and concept development to detailed engineering, calculations, tolerance analysis, GD&T, design reviews, failure analysis, manufacturability, technical documentation, TPD, production support, and final release.',
-  'While working as a designer, I also gained additional hands-on experience through weekend cleanroom assembly work. This helped me understand how released designs are physically handled, assembled, and experienced by technicians.',
-  'I later moved into system qualification to experience the other side of engineering. I now work closer to operating machines, software-controlled system behaviour, test procedures, module failures, troubleshooting, repairs, verification, technical logging, shift handovers, and multidisciplinary cooperation.',
-  'This was an intentional career move. I wanted to understand the practical details and system interactions that are difficult to experience fully from a mechanical-design role alone.',
-  'Outside work, I enjoy hiking, learning unfamiliar technologies, and building personal projects involving mechanical design, RC systems, electronics, software, 3D printing, fabrication, and practical workshop tools.',
+  'I am a mechanical engineer who enjoys understanding the full lifecycle of a product, from the first concept to how it is assembled, tested, maintained, and improved.',
+  'My background is in precision mechanical design, covering concept development, detailed engineering, tolerance analysis, GD&T, manufacturability, technical documentation, production support, and final release.',
+  'Alongside design, I gained hands-on cleanroom assembly experience. This showed me how released designs are handled by technicians and where practical challenges can appear during assembly.',
+  'I later moved into system qualification to understand the wider system. My work now involves operating complex machines, following test procedures, troubleshooting failures, verifying repairs, documenting results, and working across disciplines.',
+  'That move was intentional. I wanted experience on both sides of engineering: creating a design and understanding how it behaves once integrated into a real machine.',
+  'Outside work, I enjoy hiking and building personal projects involving RC systems, electronics, software, 3D printing, and fabrication.',
 ];
 
 const collage = [
-  { label: 'DESIGN', sub: 'CAD · drawing · render', accent: false },
-  { label: 'BUILD', sub: 'printed part · assembly', accent: false },
-  { label: 'TEST', sub: 'personal test setup', accent: false },
-  { label: 'LEARN', sub: 'electronics · software', accent: false },
-  { label: 'OUTSIDE', sub: 'hiking · personal', accent: true },
+  {
+    label: 'DESIGN',
+    sub: 'CAD · drawing · render',
+    desc: 'Concept work and CAD development for personal and professional projects.',
+    accent: false,
+    image: '/images/about/design.png',
+  },
+  {
+    label: 'BUILD',
+    sub: 'printed part · assembly',
+    desc: 'Printed part assembly and mechanical build progress in the workshop.',
+    accent: false,
+    image: '/images/about/build.jpeg',
+  },
+  {
+    label: 'TEST',
+    sub: 'personal test setup',
+    desc: 'Hands-on testing and setup work to validate prototype assemblies.',
+    accent: false,
+    image: '/images/about/test.jpeg',
+  },
+  {
+    label: 'LEARN',
+    sub: 'electronics · software',
+    desc: 'Learning electronics, software, and systems tools to support my hardware work.',
+    accent: false,
+    image: '/images/about/learn.png',
+  },
+  {
+    label: 'OUTSIDE',
+    sub: 'hiking · personal',
+    desc: 'Time away from the workshop helps me stay creative and focused on new ideas.',
+    accent: true,
+    image: '/images/about/outside.jpeg',
+  },
 ];
 ---
 
@@ -34,13 +64,31 @@ const collage = [
 
     <div data-reveal class="collage">
       {collage.map((c, i) => (
-        <div class={`tile ${i === 0 ? 'tall' : ''} ${c.accent ? 'accent' : ''}`}>
+        <button
+          type="button"
+          class={`tile ${i === 0 ? 'tall' : ''} ${c.accent ? 'accent' : ''}`}
+          style={c.image ? `background-image:url(${c.image})` : undefined}
+          data-index={i}
+          aria-label={`${c.label} image details`}
+        >
           <span class="tile-label">
             {c.label}
             <span class="tile-sub">{c.sub}</span>
           </span>
-        </div>
+        </button>
       ))}
+    </div>
+  </div>
+
+  <div class="lightbox" hidden aria-hidden="true">
+    <div class="lightbox-overlay" data-close="true"></div>
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+      <button type="button" class="lightbox-close" aria-label="Close image preview" data-close="true">×</button>
+      <div class="lightbox-image"></div>
+      <div class="lightbox-copy">
+        <h3 id="lightbox-title"></h3>
+        <p id="lightbox-desc"></p>
+      </div>
     </div>
   </div>
 </section>
@@ -133,11 +181,17 @@ const collage = [
   .tile {
     position: relative;
     background: repeating-linear-gradient(135deg, #e7e4da, #e7e4da 9px, #eeece3 9px, #eeece3 18px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border: 1px solid var(--color-line-soft);
   }
 
   .tile.accent {
     background: repeating-linear-gradient(135deg, #dfe0d6, #dfe0d6 9px, #e7e8de 9px, #e7e8de 18px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   @media (min-width: 820px) {
@@ -150,14 +204,20 @@ const collage = [
     position: absolute;
     left: 14px;
     bottom: 12px;
+    right: 14px;
+    padding: 10px 12px 8px;
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.1em;
-    color: var(--color-muted);
+    color: var(--color-bg);
+    background: rgba(20, 24, 31, 0.68);
+    backdrop-filter: blur(8px);
+    border-radius: 3px;
   }
 
   .tile.accent .tile-label {
-    color: var(--color-accent);
+    color: var(--color-bg);
+    background: rgba(15, 40, 38, 0.72);
   }
 
   .tile-sub {
@@ -167,4 +227,150 @@ const collage = [
     letter-spacing: 0.06em;
     margin-top: 3px;
   }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 2000;
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 14, 18, 0.82);
+  }
+
+  .lightbox-panel {
+    position: relative;
+    width: min(95vw, 960px);
+    max-height: 90vh;
+    padding: 28px;
+    border-radius: 16px;
+    background: rgba(248, 246, 239, 0.96);
+    box-shadow: 0 24px 64px rgba(11, 14, 18, 0.24);
+    overflow: hidden;
+    z-index: 1;
+    display: grid;
+    gap: 18px;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: rgba(26, 28, 27, 0.08);
+    color: var(--color-ink);
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .lightbox-image {
+    min-height: 320px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 12px;
+    background-color: var(--color-bg);
+  }
+
+  .lightbox-copy {
+    display: grid;
+    gap: 12px;
+  }
+
+  .lightbox-copy h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.1;
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .lightbox-copy p {
+    font-size: clamp(16px, 1.1vw, 18px);
+    line-height: 1.65;
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
 </style>
+
+<script>
+  const collageTiles = document.querySelectorAll('.about .tile[data-index]');
+  const lightbox = document.querySelector('.about .lightbox');
+  const lightboxOverlay = document.querySelector('.about .lightbox-overlay');
+  const lightboxClose = document.querySelector('.about .lightbox-close');
+  const lightboxImage = document.querySelector('.about .lightbox-image');
+  const lightboxTitle = document.querySelector('#lightbox-title');
+  const lightboxDesc = document.querySelector('#lightbox-desc');
+
+  const collageData = [
+    {
+      label: 'DESIGN',
+      desc: 'Concept work and CAD development for personal and professional projects.',
+      image: '/images/about/design.png',
+    },
+    {
+      label: 'BUILD',
+      desc: 'Printed part assembly and mechanical build progress in the workshop.',
+      image: '/images/about/build.jpeg',
+    },
+    {
+      label: 'TEST',
+      desc: 'Hands-on testing and setup work to validate prototype assemblies.',
+      image: '/images/about/test.jpeg',
+    },
+    {
+      label: 'LEARN',
+      desc: 'Learning electronics, software, and systems tools to support my hardware work.',
+      image: '/images/about/learn.png',
+    },
+    {
+      label: 'OUTSIDE',
+      desc: 'Time away from the workshop helps me stay creative and focused on new ideas.',
+      image: '/images/about/outside.jpeg',
+    },
+  ];
+
+  function openImageLightbox(index) {
+    const item = collageData[index];
+    if (!item) return;
+    lightboxImage.style.backgroundImage = `url('${item.image}')`;
+    lightboxTitle.textContent = item.label;
+    lightboxDesc.textContent = item.desc;
+    lightbox.removeAttribute('hidden');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeImageLightbox() {
+    lightbox.setAttribute('hidden', '');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImage.style.backgroundImage = '';
+  }
+
+  collageTiles.forEach((tile) => {
+    tile.addEventListener('click', () => {
+      const index = Number(tile.dataset.index);
+      openImageLightbox(index);
+    });
+  });
+
+  [lightboxOverlay, lightboxClose].forEach((el) => {
+    el.addEventListener('click', closeImageLightbox);
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !lightbox.hasAttribute('hidden')) {
+      closeImageLightbox();
+    }
+  });
+</script>
