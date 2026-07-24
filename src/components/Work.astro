@@ -1,0 +1,320 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+const projects = allProjects.sort((a, b) => {
+  const orderA = a.data.order ?? Infinity;
+  const orderB = b.data.order ?? Infinity;
+  if (orderA !== orderB) return orderA - orderB;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
+---
+
+<section id="work" class="work section-dark">
+  <div class="inner">
+    <div data-reveal class="intro">
+      <div class="kicker">05&nbsp;&nbsp;/&nbsp;&nbsp;WORK</div>
+      <h2>Where I apply my engineering.</h2>
+      <p class="lead">
+        Some of my work can be shown openly, while some of it has to stay at a higher level because of confidentiality. The sections below separate my professional experience from the personal projects and experiments I can share in more detail.
+      </p>
+    </div>
+
+    <div data-reveal class="confidential-note">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2 4 5.5v6c0 4.6 3.2 8.4 8 10 4.8-1.6 8-5.4 8-10v-6L12 2Z" stroke="#E2B93B" stroke-width="1.3" stroke-linejoin="round"></path>
+        <rect x="8.5" y="10.5" width="7" height="6" rx="1" stroke="#E2B93B" stroke-width="1.2"></rect>
+        <path d="M9.8 10.5V9a2.2 2.2 0 0 1 4.4 0v1.5" stroke="#E2B93B" stroke-width="1.2"></path>
+      </svg>
+      <div>
+        <h3>A quick note on confidential work.</h3>
+        <p>
+          A lot of my professional work involves confidential clients, systems, procedures, and technical information. I can still explain the type of work I do, how I approach problems, and the skills involved, but I cannot publish detailed project information here.
+        </p>
+        <p>For a fuller overview of my experience, you can request my CV or get in touch.</p>
+      </div>
+    </div>
+
+    <div class="group-label">PROFESSIONAL EXPERIENCE &middot; HIGH-LEVEL OVERVIEW</div>
+    <div class="pro-grid">
+      <div data-reveal class="pro-card">
+        <a href="https://www.youtube.com/@ASMLcompany" target="_blank" rel="noopener" class="pro-media">
+          <span class="play-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6.5v11l9-5.5z"></path></svg>
+          </span>
+          <span class="media-label">ASML &middot; PUBLIC MACHINE OVERVIEW</span>
+        </a>
+        <div class="pro-body">
+          <div class="pro-tag">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="10" rx="1.4" stroke="#E2B93B" stroke-width="1.4"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="#E2B93B" stroke-width="1.4"></path></svg>
+            <span>PROFESSIONAL EXPERIENCE &middot; CONFIDENTIAL</span>
+          </div>
+          <h3>Mechanical Design</h3>
+          <p>Design, development and release. High-level experience across the mechanical design lifecycle within a high-tech ASML environment.</p>
+          <a href="https://www.youtube.com/@ASMLcompany" target="_blank" rel="noopener" class="watch-link">Watch public machine overview &#8599;</a>
+          <div class="details-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="10" rx="1.4" stroke="currentColor" stroke-width="1.5"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="1.5"></path></svg>
+            DETAILS AVAILABLE ON REQUEST
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="pro-card">
+        <a href="https://www.youtube.com/@ASMLcompany" target="_blank" rel="noopener" class="pro-media">
+          <span class="play-btn" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6.5v11l9-5.5z"></path></svg>
+          </span>
+          <span class="media-label">ASML &middot; PUBLIC MACHINE OVERVIEW</span>
+        </a>
+        <div class="pro-body">
+          <div class="pro-tag">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="10" rx="1.4" stroke="#E2B93B" stroke-width="1.4"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="#E2B93B" stroke-width="1.4"></path></svg>
+            <span>CURRENT ROLE &middot; CONFIDENTIAL</span>
+          </div>
+          <h3>System Qualification</h3>
+          <p>Testing, troubleshooting, verification and validation. High-level experience qualifying complete operating systems within a high-tech ASML environment.</p>
+          <a href="https://www.youtube.com/@ASMLcompany" target="_blank" rel="noopener" class="watch-link">Watch public machine overview &#8599;</a>
+          <div class="details-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="10" rx="1.4" stroke="currentColor" stroke-width="1.5"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="1.5"></path></svg>
+            DETAILS AVAILABLE ON REQUEST
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      Official public ASML videos are used only to provide general technology context. This is an independent personal portfolio and is not endorsed by or affiliated with ASML.
+    </p>
+
+    <div class="group-label group-label-spaced">PERSONAL PROJECTS &amp; PUBLIC WORK &middot; FULL CASE STUDIES</div>
+    {projects.length > 0 ? (
+      <div data-reveal class="project-grid">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty-note">Projects are on the way — check back soon.</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .work {
+    position: relative;
+  }
+
+  .inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: clamp(70px, 9vw, 130px) var(--page-pad);
+  }
+
+  .intro {
+    max-width: 760px;
+    margin-bottom: clamp(30px, 3.5vw, 44px);
+  }
+
+  .intro .kicker {
+    margin-bottom: 22px;
+  }
+
+  .intro h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(32px, 4.4vw, 58px);
+    line-height: 1.03;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+
+  .intro .lead {
+    font-size: clamp(15px, 1.2vw, 17.5px);
+    line-height: 1.6;
+    color: var(--color-dark-text-soft);
+    max-width: 640px;
+    text-wrap: pretty;
+  }
+
+  .confidential-note {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px 24px;
+    border: 1px solid rgba(226, 185, 59, 0.3);
+    border-radius: 3px;
+    background: rgba(226, 185, 59, 0.05);
+    margin-bottom: 18px;
+  }
+
+  .confidential-note svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .confidential-note h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(19px, 1.9vw, 24px);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+
+  .confidential-note p {
+    font-size: 14.5px;
+    line-height: 1.58;
+    color: var(--color-dark-text-soft);
+    margin-bottom: 8px;
+    text-wrap: pretty;
+  }
+
+  .group-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    color: var(--color-dark-text-faint);
+    margin-bottom: 16px;
+  }
+
+  .group-label-spaced {
+    margin-top: clamp(30px, 3.5vw, 48px);
+  }
+
+  .pro-grid,
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 760px) {
+    .pro-grid,
+    .project-grid {
+      /* Same fixed two-column track sizing on both grids so professional and
+         personal-project cards line up and match width. A lone project card
+         (first column, second cell empty) is preferable to mismatched sizes. */
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .pro-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-dark-line);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .pro-card:hover {
+    border-color: rgba(226, 185, 59, 0.5);
+  }
+
+  .pro-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 8;
+    background: repeating-linear-gradient(135deg, #232524, #232524 10px, #1f211f 10px, #1f211f 20px);
+  }
+
+  .play-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.4px solid rgba(226, 185, 59, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gold);
+  }
+
+  .media-label {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-dark-text-faint);
+  }
+
+  .pro-body {
+    padding: 24px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .pro-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    color: var(--color-gold);
+  }
+
+  .pro-body h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.08;
+    margin-bottom: 12px;
+  }
+
+  .pro-body p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #c9cbc7;
+    margin-bottom: 18px;
+    flex: 1;
+    text-wrap: pretty;
+  }
+
+  .watch-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-gold);
+    margin-bottom: 16px;
+    align-self: flex-start;
+    border-bottom: 1px solid rgba(226, 185, 59, 0.4);
+    padding-bottom: 2px;
+  }
+
+  .watch-link:hover {
+    color: var(--color-dark-text);
+  }
+
+  .details-note {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-dark-text-mute);
+  }
+
+  .disclaimer {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--color-dark-text-faint);
+    max-width: 760px;
+    margin-top: 18px;
+    text-wrap: pretty;
+  }
+
+  .empty-note {
+    font-size: 14px;
+    color: var(--color-dark-text-mute);
+  }
+</style>

@@ -1,0 +1,347 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { entry, headings } = Astro.props;
+const { title, category, summary, role, domain, status, year, coverImage } = entry.data;
+
+const sections = headings
+  .filter((h) => h.depth === 2)
+  .map((h, i) => ({ ...h, n: String(i + 1).padStart(2, '0') }));
+---
+
+<BaseLayout title={`${title} — Cameron Bartholome`} description={summary}>
+  <div class="page">
+    <nav class="proj-nav">
+      <a href="/#top" class="back">&larr; Cameron&nbsp;B.</a>
+      <span class="kicker">Project Case Study</span>
+      <a href="/#work" class="all-work">All work &rarr;</a>
+    </nav>
+
+    <header class="hero">
+      <div class="kicker accent">{category}</div>
+      <h1>{title}</h1>
+      <p class="summary">{summary}</p>
+      <div class="meta-row">
+        <div><div class="kicker">Role</div><div class="meta-val">{role ?? 'Design & engineering'}</div></div>
+        <div><div class="kicker">Domain</div><div class="meta-val">{domain ?? '—'}</div></div>
+        <div><div class="kicker">Status</div><div class="meta-val">{status}</div></div>
+        <div><div class="kicker">Year</div><div class="meta-val">{year ?? '—'}</div></div>
+      </div>
+    </header>
+
+    <div class="figure-wrap">
+      <div class="figure" style={coverImage ? `background-image:url(${coverImage})` : undefined}>
+        {!coverImage && <span class="figure-label">HERO IMAGE — key visual / CAD render / build photo</span>}
+      </div>
+    </div>
+
+    <div class="body-grid">
+      {sections.length > 0 && (
+        <aside class="contents">
+          <div class="kicker">Contents</div>
+          <div class="contents-list">
+            {sections.map((s) => (
+              <a href={`#${s.slug}`}>{s.n} {s.text}</a>
+            ))}
+          </div>
+        </aside>
+      )}
+
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+
+    <div class="prev-next">
+      <a href="/#work">&larr; Back to work</a>
+      <a href="#top" class="top-link">Top &uarr;</a>
+    </div>
+
+    <footer class="site-footer">
+      <span class="brand">Cameron B.</span>
+      <span>Based in Eindhoven, Netherlands.</span>
+      <span>&copy; {new Date().getFullYear()}</span>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    position: relative;
+  }
+
+  .proj-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 14px clamp(24px, 5vw, 96px);
+    background: rgba(242, 240, 232, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .back,
+  .all-work {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+  }
+
+  .proj-nav .kicker {
+    font-size: 11.5px;
+  }
+
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(48px, 6vw, 88px) clamp(24px, 5vw, 96px) clamp(32px, 4vw, 56px);
+  }
+
+  .hero .kicker.accent {
+    color: var(--color-accent);
+    margin-bottom: 22px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(38px, 6vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+    margin-bottom: 26px;
+  }
+
+  .summary {
+    font-size: clamp(17px, 1.5vw, 21px);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    max-width: 640px;
+    text-wrap: pretty;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px;
+    margin-top: 38px;
+    padding-top: 26px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .meta-row .kicker {
+    margin-bottom: 6px;
+  }
+
+  .meta-val {
+    font-size: 15px;
+    color: var(--color-ink);
+  }
+
+  .figure-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 96px) clamp(40px, 5vw, 72px);
+  }
+
+  .figure {
+    position: relative;
+    aspect-ratio: 21 / 9;
+    background: repeating-linear-gradient(135deg, #e7e4da, #e7e4da 11px, #eeece3 11px, #eeece3 22px);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+  }
+
+  .figure-label {
+    position: absolute;
+    left: 20px;
+    bottom: 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .body-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px clamp(24px, 5vw, 96px) clamp(40px, 5vw, 64px);
+    display: block;
+  }
+
+  @media (min-width: 900px) {
+    .body-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: clamp(32px, 4vw, 64px);
+      align-items: start;
+    }
+  }
+
+  .contents {
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: 900px) {
+    .contents {
+      position: sticky;
+      top: 96px;
+      align-self: start;
+      margin-bottom: 0;
+    }
+  }
+
+  .contents .kicker {
+    margin-bottom: 16px;
+  }
+
+  .contents-list {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  @media (min-width: 900px) {
+    .contents-list {
+      flex-direction: column;
+      gap: 11px;
+      overflow: visible;
+    }
+  }
+
+  .contents-list a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--color-muted-2);
+    white-space: nowrap;
+  }
+
+  .contents-list a:hover {
+    color: var(--color-accent);
+  }
+
+  .content {
+    position: relative;
+    min-width: 0;
+    border-left: 1px solid var(--color-line-soft);
+    padding-left: clamp(20px, 3vw, 40px);
+  }
+
+  .content :global(h2) {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: clamp(40px, 5vw, 64px) 0 16px;
+    scroll-margin-top: 96px;
+  }
+
+  .content :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .content :global(p) {
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    max-width: 680px;
+    text-wrap: pretty;
+    margin-bottom: 16px;
+  }
+
+  .content :global(ul) {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    max-width: 680px;
+    margin-bottom: 16px;
+  }
+
+  .content :global(li) {
+    display: flex;
+    gap: 12px;
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+    list-style: none;
+  }
+
+  .content :global(li)::before {
+    content: '—';
+    font-family: var(--font-mono);
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .content :global(img) {
+    max-width: 720px;
+    border: 1px solid var(--color-line-soft);
+    border-radius: 3px;
+    margin: 6px 0 16px;
+  }
+
+  .content :global(strong) {
+    color: var(--color-ink);
+  }
+
+  .prev-next {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px clamp(24px, 5vw, 96px) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .prev-next a {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+  }
+
+  .top-link {
+    color: var(--color-accent) !important;
+  }
+
+  .site-footer {
+    background: var(--color-ink);
+    color: var(--color-dark-text);
+    margin-top: clamp(40px, 5vw, 72px);
+    padding: 28px clamp(24px, 5vw, 96px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-dark-text-mute);
+  }
+
+  .brand {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--color-dark-text);
+  }
+</style>

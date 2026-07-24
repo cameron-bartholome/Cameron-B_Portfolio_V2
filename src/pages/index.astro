@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import CareerJourney from '../components/CareerJourney.astro';
+import HowIThink from '../components/HowIThink.astro';
+import ContinuousLearning from '../components/ContinuousLearning.astro';
+import Work from '../components/Work.astro';
+import VoragoTeaser from '../components/VoragoTeaser.astro';
+import Contact from '../components/Contact.astro';
+import CreditsModal from '../components/CreditsModal.astro';
+---
+
+<BaseLayout title="Cameron Bartholome — Mechanical Engineer">
+  <div class="page-shell">
+    <Nav />
+    <Hero />
+    <About />
+    <CareerJourney />
+    <HowIThink />
+    <ContinuousLearning />
+    <Work />
+    <VoragoTeaser />
+    <Contact />
+  </div>
+  <CreditsModal />
+</BaseLayout>
+
+<style>
+  .page-shell {
+    position: relative;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, category, status, summary, technologies, coverImage } = project.data;
+---
+
+<a href={`/projects/${project.slug}/`} class="card">
+  <div class="image" style={coverImage ? `background-image:url(${coverImage})` : undefined}>
+    {!coverImage && <span class="image-label">IMAGE &middot; {category}</span>}
+  </div>
+  <div class="body">
+    <div class="badges">
+      <span class="badge category">{category}</span>
+      <span class="badge status">{status}</span>
+    </div>
+    <h3>{title}</h3>
+    <p class="summary">{summary}</p>
+    {technologies.length > 0 && (
+      <div class="tech-row">
+        {technologies.map((t) => (
+          <span class="tech-chip">{t}</span>
+        ))}
+      </div>
+    )}
+    <span class="link-row">View project journey &rarr;</span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-dark-line);
+    border-radius: 3px;
+    overflow: hidden;
+    color: inherit;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .card:hover {
+    border-color: rgba(226, 185, 59, 0.5);
+    color: inherit;
+    transform: translateY(-4px);
+  }
+
+  .image {
+    position: relative;
+    aspect-ratio: 16 / 8;
+    background: repeating-linear-gradient(135deg, #232524, #232524 10px, #1f211f 10px, #1f211f 20px);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .image-label {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--color-dark-text-faint);
+  }
+
+  .body {
+    padding: 24px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  .badge.category {
+    color: var(--color-accent);
+    border: 1px solid rgba(199, 91, 50, 0.4);
+  }
+
+  .badge.status {
+    color: var(--color-gold);
+    border: 1px solid rgba(226, 185, 59, 0.4);
+  }
+
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .summary {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #c9cbc7;
+    margin-bottom: 16px;
+    flex: 1;
+    text-wrap: pretty;
+  }
+
+  .tech-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .tech-chip {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-dark-text-mute);
+    border: 1px solid var(--color-dark-line);
+    border-radius: 2px;
+    padding: 3px 7px;
+  }
+
+  .link-row {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--color-gold);
+    align-self: flex-start;
+  }
+
+  .card:hover .link-row {
+    color: var(--color-dark-text);
+  }
+</style>

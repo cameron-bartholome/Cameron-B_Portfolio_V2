@@ -1,0 +1,560 @@
+---
+import { careerStages, futureStages, openDirection, journeyIntro, futureDirectionCopy } from '../data/career';
+
+const stageA = careerStages.find((s) => !s.active) ?? careerStages[0];
+const stageB = careerStages.find((s) => s.active) ?? careerStages[careerStages.length - 1];
+const dotCount = 7;
+---
+
+<section id="journey" class="journey section-dark">
+  <div class="inner">
+    <div data-reveal class="intro">
+      <div class="kicker">02&nbsp;&nbsp;/&nbsp;&nbsp;CAREER JOURNEY</div>
+      <h2>{journeyIntro.heading}</h2>
+      <p class="lead">{journeyIntro.body}</p>
+    </div>
+
+    <div data-reveal class="timeline" aria-hidden="true">
+      <div class="timeline-line"></div>
+      <div class="timeline-row">
+        {Array.from({ length: dotCount }).map(() => (
+          <span class="timeline-dot"></span>
+        ))}
+        <span class="timeline-arrow"></span>
+      </div>
+    </div>
+
+    <div data-reveal class="stages">
+      <div class="col-a">
+        <div class="stage-card">
+          <div class="stage-marker muted"></div>
+          <div class="stage-head">
+            <span class="kicker stage-label">{stageA.label}</span>
+            <span class="kicker stage-dates">{stageA.period ?? 'DATES'}</span>
+          </div>
+          <h3>{stageA.title}</h3>
+          <div class="stage-org">{stageA.org}</div>
+          <p class="stage-desc">{stageA.description}</p>
+          <div class="tag-flow">
+            {stageA.tags.map((t, i) => (
+              <>
+                <span class={i === stageA.tags.length - 1 ? 'final' : ''}>{t}</span>
+                {i < stageA.tags.length - 1 && <span class="arrow">&rarr;</span>}
+              </>
+            ))}
+          </div>
+        </div>
+
+        {stageA.parallel && (
+          <>
+            <div class="connector"></div>
+            <div class="parallel-card">
+              <div class="kicker">{stageA.parallel.label}</div>
+              <h4>{stageA.parallel.title}</h4>
+              <div class="parallel-org">{stageA.parallel.org}</div>
+              <p class="parallel-desc">{stageA.parallel.description}</p>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div class="stage-card active">
+        <div class="stage-marker accent"></div>
+        <div class="stage-head">
+          <span class="kicker stage-label gold">{stageB.label}</span>
+          <span class="kicker stage-dates gold">CURRENT ROLE</span>
+        </div>
+        <h3>{stageB.title}</h3>
+        <div class="stage-org gold">{stageB.org}</div>
+        <p class="stage-desc light">{stageB.description}</p>
+        <div class="tag-flow light">
+          {stageB.tags.map((t, i) => (
+            <>
+              <span class={i === stageB.tags.length - 1 ? 'final-gold' : ''}>{t}</span>
+              {i < stageB.tags.length - 1 && <span class="arrow gold">&rarr;</span>}
+            </>
+          ))}
+        </div>
+        {stageB.quote && (
+          <div class="quote-wrap">
+            <p class="quote">&ldquo;{stageB.quote}&rdquo;</p>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="future">
+      <div class="future-intro">
+        <div class="kicker gold">FUTURE DIRECTION</div>
+        <h3>{futureDirectionCopy.heading}</h3>
+        {futureDirectionCopy.paragraphs.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+
+      <div class="future-grid">
+        {futureStages.map((f) => (
+          <div class={`future-stage ${f.solid ? 'solid' : 'dashed'}`}>
+            <span class={`future-dot ${f.solid ? 'solid' : 'dashed'}`}></span>
+            <div class={`future-name ${f.solid ? 'solid' : ''}`}>{f.name}</div>
+            <div class="future-sub">{f.sub}</div>
+            <div class={`future-tag ${f.current ? 'current' : f.solid ? 'solid' : 'dashed'}`}>{f.tag}</div>
+          </div>
+        ))}
+      </div>
+
+      <div class="open-direction">
+        <span class="branch-glyph" aria-hidden="true">&#8627;</span>
+        <div class="open-card">
+          <div class="kicker">OPEN TECHNICAL DIRECTION</div>
+          <div class="open-title">{openDirection.title}</div>
+          <span class="open-tag">{openDirection.tag}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .journey {
+    position: relative;
+  }
+
+  .inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: clamp(70px, 9vw, 130px) var(--page-pad);
+  }
+
+  .intro {
+    max-width: 820px;
+    margin-bottom: clamp(44px, 5vw, 72px);
+  }
+
+  .intro .kicker {
+    margin-bottom: 22px;
+  }
+
+  .intro h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(32px, 4.4vw, 58px);
+    line-height: 1.03;
+    letter-spacing: -0.015em;
+    margin-bottom: 24px;
+  }
+
+  .intro .lead {
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.6;
+    color: var(--color-dark-text-soft);
+    max-width: 660px;
+    text-wrap: pretty;
+  }
+
+  .timeline {
+    position: relative;
+    height: 16px;
+    margin-bottom: 26px;
+  }
+
+  .timeline-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1.4px;
+    background: var(--color-gold);
+    opacity: 0.55;
+    transform: translateY(-50%);
+  }
+
+  .timeline-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 16px;
+  }
+
+  .timeline-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    box-shadow: 0 0 0 3px var(--color-ink);
+    flex-shrink: 0;
+  }
+
+  .timeline-arrow {
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 11px solid var(--color-gold);
+    flex-shrink: 0;
+  }
+
+  .stages {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 3vw, 44px);
+    align-items: start;
+  }
+
+  @media (min-width: 860px) {
+    .stages {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .col-a {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stage-card {
+    position: relative;
+    border: 1px solid var(--color-dark-line);
+    border-radius: 3px;
+    padding: 28px 26px 30px;
+  }
+
+  .stage-card.active {
+    border-color: rgba(226, 185, 59, 0.5);
+    background: rgba(199, 91, 50, 0.08);
+  }
+
+  .stage-marker {
+    position: absolute;
+    top: -11px;
+    left: 26px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--color-ink);
+  }
+
+  .stage-marker.muted {
+    background: var(--color-dark-text-mute);
+  }
+
+  .stage-marker.accent {
+    background: var(--color-accent);
+  }
+
+  .stage-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .stage-label {
+    color: var(--color-dark-text-mute);
+  }
+
+  .stage-label.gold,
+  .stage-dates.gold {
+    color: var(--color-gold);
+  }
+
+  .stage-dates {
+    color: var(--color-dark-text-faint);
+  }
+
+  .stage-card h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+
+  .stage-org {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--color-gold);
+    margin-bottom: 16px;
+  }
+
+  .stage-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-dark-text-soft);
+    margin-bottom: 18px;
+    text-wrap: pretty;
+  }
+
+  .stage-desc.light {
+    color: #e7e1d3;
+  }
+
+  .tag-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    color: var(--color-dark-text-mute);
+  }
+
+  .tag-flow.light {
+    color: var(--color-dark-text-soft);
+    margin-bottom: 22px;
+  }
+
+  .tag-flow .arrow {
+    color: #6f726c;
+  }
+
+  .tag-flow .arrow.gold {
+    color: #8a7a3a;
+  }
+
+  .tag-flow .final {
+    color: var(--color-accent);
+  }
+
+  .tag-flow .final-gold {
+    color: var(--color-gold);
+  }
+
+  .connector {
+    width: 1px;
+    height: 26px;
+    background: var(--color-dark-line);
+    margin-left: 33px;
+  }
+
+  .parallel-card {
+    margin-left: 33px;
+    border: 1px dashed rgba(242, 240, 232, 0.24);
+    border-radius: 3px;
+    padding: 20px 22px 22px;
+    background: rgba(242, 240, 232, 0.03);
+  }
+
+  .parallel-card .kicker {
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .parallel-card h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .parallel-org {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--color-dark-text-mute);
+    margin-bottom: 14px;
+  }
+
+  .parallel-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #b6b8b3;
+    text-wrap: pretty;
+  }
+
+  .quote-wrap {
+    border-top: 1px solid rgba(226, 185, 59, 0.35);
+    padding-top: 18px;
+  }
+
+  .quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 23px);
+    line-height: 1.3;
+    color: var(--color-gold);
+    text-wrap: pretty;
+  }
+
+  .future {
+    margin-top: clamp(48px, 6vw, 84px);
+    border-top: 1px solid var(--color-dark-line);
+    padding-top: clamp(36px, 4vw, 56px);
+  }
+
+  .future-intro {
+    max-width: 820px;
+    margin-bottom: clamp(30px, 3.5vw, 48px);
+  }
+
+  .future-intro .kicker {
+    font-size: 11.5px;
+    margin-bottom: 16px;
+  }
+
+  .future-intro h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .future-intro p {
+    font-size: clamp(15px, 1.15vw, 17px);
+    line-height: 1.62;
+    color: var(--color-dark-text-soft);
+    max-width: 720px;
+    margin-bottom: 14px;
+    text-wrap: pretty;
+  }
+
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 2.5vw, 36px);
+  }
+
+  @media (min-width: 620px) {
+    .future-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 980px) {
+    .future-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .future-stage {
+    position: relative;
+    padding-top: 24px;
+  }
+
+  .future-stage.solid {
+    border-top: 1px solid rgba(242, 240, 232, 0.5);
+  }
+
+  .future-stage.dashed {
+    border-top: 1px dashed rgba(242, 240, 232, 0.22);
+    opacity: 0.62;
+  }
+
+  .future-dot {
+    position: absolute;
+    top: -7px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--color-ink);
+  }
+
+  .future-dot.solid {
+    background: var(--color-gold);
+  }
+
+  .future-dot.dashed {
+    background: var(--color-ink);
+    border: 1.4px dashed rgba(242, 240, 232, 0.55);
+  }
+
+  .future-name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--color-dark-text-soft);
+    margin-bottom: 6px;
+  }
+
+  .future-name.solid {
+    color: var(--color-gold);
+  }
+
+  .future-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 16px;
+    color: #b6b8b3;
+    margin-bottom: 8px;
+  }
+
+  .future-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    padding: 3px 8px;
+  }
+
+  .future-tag.solid {
+    color: var(--color-gold);
+    border: 1px solid rgba(226, 185, 59, 0.4);
+  }
+
+  .future-tag.current {
+    color: var(--color-accent);
+    border: 1px solid rgba(199, 91, 50, 0.5);
+  }
+
+  .future-tag.dashed {
+    color: var(--color-dark-text-faint);
+    border: 1px dashed rgba(242, 240, 232, 0.24);
+  }
+
+  .open-direction {
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 540px;
+    opacity: 0.62;
+  }
+
+  .branch-glyph {
+    font-family: var(--font-mono);
+    color: var(--color-dark-text-mute);
+    font-size: 17px;
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .open-card {
+    flex: 1;
+    border: 1px dashed rgba(242, 240, 232, 0.28);
+    border-radius: 3px;
+    padding: 14px 16px;
+  }
+
+  .open-card .kicker {
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+
+  .open-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    color: #b6b8b3;
+    margin-bottom: 9px;
+  }
+
+  .open-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--color-dark-text-faint);
+    border: 1px dashed rgba(242, 240, 232, 0.24);
+    border-radius: 2px;
+    padding: 3px 8px;
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Cameron Bartholome — mechanical engineer working across precision design and system qualification, based in Eindhoven, Netherlands.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+    <script>
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const el = entry.target as HTMLElement;
+              if (el.hasAttribute('data-path')) {
+                (el as unknown as SVGGeometryElement).style.strokeDashoffset = '0';
+              } else {
+                el.classList.add('is-visible');
+              }
+              io.unobserve(el);
+            }
+          },
+          { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
+        );
+
+        document.querySelectorAll<SVGGeometryElement>('[data-path]').forEach((path) => {
+          let len = 1200;
+          try {
+            len = path.getTotalLength();
+          } catch {
+            /* not a measurable path, keep default */
+          }
+          path.style.strokeDasharray = String(len);
+          path.style.strokeDashoffset = String(len);
+          io.observe(path);
+        });
+
+        document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

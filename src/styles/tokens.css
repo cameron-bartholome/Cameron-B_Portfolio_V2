@@ -1,0 +1,34 @@
+:root {
+  /* colors */
+  --color-bg: #f2f0e8;
+  --color-bg-alt: #f7f5ee;
+  --color-bg-panel: #faf9f4;
+  --color-ink: #1a1c1b;
+  --color-ink-soft: #3a3d3b;
+  --color-muted: #747872;
+  --color-muted-2: #5a5d5a;
+  --color-faint: #a3a6a1;
+  --color-line: rgba(26, 28, 27, 0.16);
+  --color-line-soft: rgba(26, 28, 27, 0.12);
+
+  --color-accent: #c75b32;
+  --color-gold: #e2b93b;
+  --color-green: #3b5a43;
+
+  /* on-dark variants */
+  --color-dark-text: #f2f0e8;
+  --color-dark-text-soft: #cbcbc5;
+  --color-dark-text-mute: #9a9c95;
+  --color-dark-text-faint: #8a8f88;
+  --color-dark-line: rgba(242, 240, 232, 0.16);
+
+  /* type */
+  --font-serif: 'Newsreader', serif;
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* layout */
+  --page-pad: clamp(24px, 6vw, 120px);
+  --max-width: 1440px;
+  --nav-height: 68px;
+}

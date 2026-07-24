@@ -1,0 +1,243 @@
+---
+const credits = [
+  {
+    title: 'ASML public machine videos',
+    creator: 'ASML',
+    href: 'https://www.youtube.com/@ASMLcompany',
+    sourceLabel: 'youtube.com/@ASMLcompany',
+    note: 'Used only to provide general technology context. All rights remain with ASML.',
+  },
+  {
+    title: 'AI-assisted design support',
+    creator: 'Claude by Anthropic',
+    href: 'https://www.anthropic.com',
+    sourceLabel: 'anthropic.com',
+    note: "Visual design assistance based on the author's prompts, direction and content.",
+  },
+];
+---
+
+<div id="credits-overlay" class="overlay" hidden>
+  <div id="credits-panel" class="panel" role="dialog" aria-modal="true" aria-label="Credits and acknowledgements">
+    <button type="button" id="close-credits" class="close-btn" aria-label="Close">&times;</button>
+    <div class="panel-inner">
+      <div class="kicker">CREDITS &amp; ACKNOWLEDGEMENTS</div>
+      <h2>Credits &amp; acknowledgements</h2>
+      <div class="disclosure">
+        <p>
+          This is an independent personal portfolio created by Cameron Bartholome. It is not affiliated with, sponsored by, or endorsed by ASML or any other company, organisation, creator, or platform referenced on this website.
+        </p>
+        <p>
+          The visual design was developed with AI-assisted design support from Claude by Anthropic, based on my prompts, direction, content and later refinements.
+        </p>
+        <p>
+          Embedded videos, thumbnails, images, logos and other third-party materials remain the property of their respective owners. Credit and links to the original creators or sources are provided where applicable.
+        </p>
+      </div>
+      <div class="kicker credits-label">CREDITS</div>
+      <div class="credit-list">
+        {credits.map((c) => (
+          <div class="credit-item">
+            <div class="credit-head">
+              <span class="credit-title">{c.title}</span>
+              <span class="credit-creator">{c.creator}</span>
+            </div>
+            <a href={c.href} target="_blank" rel="noopener" class="credit-link">{c.sourceLabel} &#8599;</a>
+            {c.note && <p class="credit-note">{c.note}</p>}
+          </div>
+        ))}
+      </div>
+      <div class="hint">Press Esc or click outside to close.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById('credits-overlay');
+  const openBtn = document.getElementById('open-credits');
+  const closeBtn = document.getElementById('close-credits');
+  const panel = document.getElementById('credits-panel');
+
+  function open() {
+    overlay?.removeAttribute('hidden');
+  }
+  function close() {
+    overlay?.setAttribute('hidden', '');
+  }
+
+  openBtn?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  overlay?.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+  panel?.addEventListener('click', (e) => e.stopPropagation());
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay?.hasAttribute('hidden')) close();
+  });
+</script>
+
+<style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(20, 22, 21, 0.55);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+
+  .overlay[hidden] {
+    display: none;
+  }
+
+  .panel {
+    background: #f5f3ec;
+    color: var(--color-ink);
+    width: min(760px, 94vw);
+    max-height: 88vh;
+    overflow: auto;
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    position: relative;
+    box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .overlay {
+      padding: 0;
+      align-items: stretch;
+    }
+
+    .panel {
+      width: 100vw;
+      max-height: 100vh;
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 28, 27, 0.06);
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--color-ink-soft);
+    line-height: 1;
+  }
+
+  .panel-inner {
+    padding: clamp(28px, 4vw, 44px);
+  }
+
+  .panel-inner > .kicker {
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin-bottom: 20px;
+  }
+
+  .disclosure {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .disclosure p {
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+  }
+
+  .credits-label {
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line-soft);
+    margin-bottom: 16px;
+  }
+
+  .credit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 1px solid var(--color-line-soft);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .credit-item {
+    background: var(--color-bg-alt);
+    padding: 16px 18px;
+  }
+
+  .credit-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .credit-title {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: var(--color-ink);
+  }
+
+  .credit-creator {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+  }
+
+  .credit-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    border-bottom: 1px solid rgba(199, 91, 50, 0.35);
+    padding-bottom: 2px;
+  }
+
+  .credit-link:hover {
+    color: var(--color-ink);
+  }
+
+  .credit-note {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-muted-2);
+    margin-top: 8px;
+    text-wrap: pretty;
+  }
+
+  .hint {
+    margin-top: 26px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-faint);
+  }
+</style>

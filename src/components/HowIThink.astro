@@ -1,0 +1,714 @@
+---
+// Mode/step data for the interactive diagram below. This is presentation
+// copy specific to this one widget, so it lives here rather than in src/data.
+const modesData = {
+  design: {
+    key: 'design',
+    label: 'Mechanical Design',
+    accent: '#C75B32',
+    soft: 'rgba(199,91,50,.12)',
+    radius: 2,
+    intro:
+      'A structured development process with clear requirements, engineering decisions, reviews, documentation, and controlled iteration.',
+    loopsTitle: 'CONTROLLED FEEDBACK LOOPS',
+    loops: [
+      'Review may return to Concepts',
+      'Review may return to Engineering',
+      'Production or test feedback may return to Requirements or Engineering',
+    ],
+    nodes: [
+      { num: '01', flow: 'PROBLEM', q: 'What are we trying to solve?', desc: 'Understand the need, intended function, users, interfaces, constraints, and expected result.' },
+      { num: '02', flow: 'REQUIREMENTS', q: 'What must the design achieve?', desc: 'Turn the problem into clear functional, mechanical, safety, manufacturing, and documentation requirements.' },
+      { num: '03', flow: 'CONCEPTS', q: 'What options could work?', desc: 'Explore different concepts and compare their performance, feasibility, cost, complexity, and risk.' },
+      { num: '04', flow: 'ENGINEERING', q: 'How do we make it work properly?', desc: 'Develop the geometry, materials, calculations, interfaces, tolerances, GD&T, and manufacturing intent.' },
+      { num: '05', flow: 'REVIEW', q: 'What could go wrong?', desc: 'Review risks, possible failure modes, manufacturability, assembly, serviceability, and tolerance behaviour.' },
+      { num: '06', flow: 'RELEASE', q: 'Can someone else build it correctly?', desc: 'Complete the drawings, BOM, TPD, release information, and supporting technical documentation.' },
+      { num: '07', flow: 'SUPPORT & IMPROVE', q: 'What did we learn after release?', desc: 'Support testing and production, answer technical questions, review feedback, and improve the next design.' },
+    ],
+  },
+  qualification: {
+    key: 'qualification',
+    label: 'System Qualification',
+    accent: '#9A7C1E',
+    soft: 'rgba(226,185,59,.18)',
+    radius: 12,
+    intro:
+      'A practical process based on preparation, observation, evidence, teamwork, retesting, and clear communication.',
+    loopsTitle: 'OPERATIONAL LOOPS',
+    loops: [
+      'If the system is not ready, return to Prepare',
+      'If the test fails, return to Observe and Investigate',
+      'If the intervention does not solve the issue, return to Investigate',
+      'Once verified, record the result and hand over clearly',
+    ],
+    nodes: [
+      { num: '01', flow: 'OBJECTIVE', q: 'What are we trying to prove?', desc: 'Understand the test objective, expected behaviour, and result that needs to be demonstrated.' },
+      { num: '02', flow: 'PREPARE', q: 'Is everything ready?', desc: 'Check the system state, procedure, tools, prerequisites, and safety conditions.' },
+      { num: '03', flow: 'RUN & OBSERVE', q: 'What is the machine doing?', desc: 'Run the test, observe the behaviour, and record what happens.' },
+      { num: '04', flow: 'INVESTIGATE', q: 'Where might the issue be?', desc: 'Investigate the symptoms, compare them with the expected behaviour, and involve the correct people where needed.' },
+      { num: '05', flow: 'RETEST & VERIFY', q: 'Did the action solve it?', desc: 'Retest the system and confirm whether it now performs as expected.' },
+      { num: '06', flow: 'RECORD & HAND OVER', q: 'What does the next person need to know?', desc: 'Record the result, actions, remaining concerns, and next steps in the logbook and shift handover.' },
+    ],
+  },
+  personal: {
+    key: 'personal',
+    label: 'Personal Projects',
+    accent: '#3B5A43',
+    soft: 'rgba(59,90,67,.12)',
+    radius: 14,
+    intro:
+      'Personal projects are where I can try an idea, build something imperfect, test it, break an assumption, and learn from whatever happens next.',
+    loopsTitle: 'HOW IT LOOPS',
+    loops: [
+      'Change something returns to Build or Test',
+      'An expected failure confirms the assumption',
+      'An unexpected failure triggers deeper investigation',
+    ],
+    nodes: [
+      { num: '01', flow: 'INTERESTING IDEA', q: 'That looks interesting. Can I build it?', desc: 'Start with an idea, problem, or technology that seems worth exploring.' },
+      { num: '02', flow: 'ROUGH CONSTRAINTS', q: 'How difficult could it really be?', desc: 'Identify the obvious limits such as cost, time, tools, materials, space, safety, and performance.' },
+      { num: '03', flow: 'BREAK INTO SYSTEMS', q: 'What actually needs to work?', desc: 'Break the idea into mechanical, electronic, software, manufacturing, and user elements.' },
+      { num: '04', flow: 'QUICK PLAN', q: 'Make a plan. Not a perfect one.', desc: 'Choose an approach that is good enough to start learning from.' },
+      { num: '05', flow: 'BUILD', q: 'Build the first version.', desc: 'Create the CAD, print the parts, assemble the hardware, wire the electronics, or build the first software experiment.' },
+      { num: '06', flow: 'TEST', q: 'Will it work?', desc: 'Test it under realistic conditions and see what the project actually does.' },
+      {
+        num: '07',
+        flow: 'FAIL OR LEARN',
+        q: 'It failed. Was that the failure I expected?',
+        desc: 'Compare the observed failure with the assumption. A knowingly imperfect prototype is fine, as long as the test still answers a question.',
+        dec: true,
+        yes: 'The assumption may have been correct, and the test still produced useful evidence. Record the lesson and improve the next version.',
+        no: 'Something more interesting may be happening. Investigate the hidden interaction or unexpected failure mode, then try another version.',
+      },
+      { num: '08', flow: 'CHANGE SOMETHING', q: 'Change something and try again.', desc: 'Improve one or more parts, record the lesson, and move into the next iteration.' },
+    ],
+  },
+};
+
+const modeOrder = ['design', 'qualification', 'personal'] as const;
+---
+
+<section id="process" class="how-i-think">
+  <div class="rule" aria-hidden="true"></div>
+  <div class="inner">
+    <div data-reveal class="intro">
+      <div class="kicker">03&nbsp;&nbsp;/&nbsp;&nbsp;HOW I THINK</div>
+      <h2>The questions I ask from problem to working system.</h2>
+      <p class="lead">
+        The exact process changes depending on what I am working on. Mechanical design is structured and controlled, system qualification is based on observation and evidence, and personal projects leave more room for experimentation and unexpected failures.
+      </p>
+    </div>
+
+    <div data-reveal class="tabs-wrap">
+      <div class="tab-bar" id="hit-tabbar" role="tablist">
+        <span class="tab-indicator" id="hit-indicator"></span>
+        {modeOrder.map((key) => (
+          <button type="button" class="tab-btn" data-mode={key} role="tab">
+            <span class="tab-icon" data-icon={key}></span>
+            <span>{modesData[key].label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="viewing-row">
+      <span class="viewing-chip" id="hit-chip">
+        <span class="viewing-dot" id="hit-dot"></span>
+        Currently viewing:&nbsp;<span class="viewing-name" id="hit-name"></span>
+      </span>
+      <p class="mode-intro" id="hit-mode-intro"></p>
+    </div>
+
+    <div class="diagram" id="hit-diagram" role="list"></div>
+
+    <div class="detail-grid">
+      <div class="detail-panel" id="hit-detail">
+        <div class="detail-kicker" id="hit-detail-kicker"></div>
+        <h3 class="detail-q" id="hit-detail-q"></h3>
+        <p class="detail-desc" id="hit-detail-desc"></p>
+        <div class="decision-grid" id="hit-decision" hidden>
+          <div class="decision-card yes">
+            <div class="decision-label">IF YES</div>
+            <p id="hit-yes"></p>
+          </div>
+          <div class="decision-card no">
+            <div class="decision-label">IF NO</div>
+            <p id="hit-no"></p>
+          </div>
+        </div>
+      </div>
+      <div class="loops-panel">
+        <div class="loops-title" id="hit-loops-title"></div>
+        <div class="loops-list" id="hit-loops"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ modesData, modeOrder }}>
+  const ICONS = {
+    design: '<circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/>',
+    qualification: '<path d="M2.5 12H7l2.2-6.5 4 13 2.1-6.5H21.5"/>',
+    personal: '<path d="M9.5 17.5h5M10.5 20.5h3M12 3a6 6 0 00-3.2 11.1c.7.5 1.2 1.2 1.2 2.1h4c0-.9.5-1.6 1.2-2.1A6 6 0 0012 3z"/>',
+  };
+
+  function iconSvg(name, size) {
+    size = size || 17;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ''}</svg>`;
+  }
+
+  const state = { mode: 'design', step: 0 };
+
+  const tabBar = document.getElementById('hit-tabbar');
+  const indicator = document.getElementById('hit-indicator');
+  const chip = document.getElementById('hit-chip');
+  const dot = document.getElementById('hit-dot');
+  const nameEl = document.getElementById('hit-name');
+  const modeIntroEl = document.getElementById('hit-mode-intro');
+  const diagramEl = document.getElementById('hit-diagram');
+  const detailPanel = document.getElementById('hit-detail');
+  const detailKicker = document.getElementById('hit-detail-kicker');
+  const detailQ = document.getElementById('hit-detail-q');
+  const detailDesc = document.getElementById('hit-detail-desc');
+  const decisionGrid = document.getElementById('hit-decision');
+  const yesEl = document.getElementById('hit-yes');
+  const noEl = document.getElementById('hit-no');
+  const loopsTitleEl = document.getElementById('hit-loops-title');
+  const loopsEl = document.getElementById('hit-loops');
+
+  function isNarrow() {
+    return window.matchMedia('(max-width: 819px)').matches;
+  }
+
+  function isMobileTabs() {
+    return window.matchMedia('(max-width: 699px)').matches;
+  }
+
+  function render() {
+    const md = modesData[state.mode];
+    const idx = modeOrder.indexOf(state.mode);
+    const step = Math.max(0, Math.min(state.step, md.nodes.length - 1));
+    const sel = md.nodes[step];
+
+    // tabs
+    const mobileTabs = isMobileTabs();
+    tabBar.querySelectorAll('.tab-btn').forEach((btn) => {
+      const active = btn.dataset.mode === state.mode;
+      const m = modesData[btn.dataset.mode];
+      btn.classList.toggle('active', active);
+      const iconWrap = btn.querySelector('.tab-icon');
+      iconWrap.innerHTML = iconSvg(btn.dataset.mode);
+      if (mobileTabs) {
+        // On mobile the tabs are separate scrollable pills (no sliding
+        // indicator behind them), so the active one needs a solid fill to
+        // read as selected.
+        btn.style.background = active ? m.accent : '';
+        btn.style.color = active ? '#F2F0E8' : '';
+        btn.style.borderColor = active ? m.accent : '';
+        iconWrap.style.color = active ? '#F2F0E8' : '';
+      } else {
+        btn.style.background = '';
+        btn.style.color = active ? m.accent : '';
+        btn.style.borderColor = '';
+        iconWrap.style.color = active ? m.accent : '';
+      }
+    });
+    indicator.style.transform = `translateX(${idx * 100}%)`;
+    indicator.style.background = md.soft;
+    indicator.style.borderBottomColor = md.accent;
+
+    // viewing chip
+    chip.style.borderColor = md.accent + '55';
+    chip.style.background = md.soft;
+    dot.style.background = md.accent;
+    dot.style.boxShadow = `0 0 0 3px ${md.accent}22`;
+    nameEl.textContent = md.label;
+    nameEl.style.color = md.accent;
+    modeIntroEl.textContent = md.intro;
+    modeIntroEl.style.borderLeftColor = md.accent;
+
+    // diagram
+    diagramEl.classList.toggle('narrow', isNarrow());
+    diagramEl.innerHTML = '';
+    md.nodes.forEach((nd, i) => {
+      const active = i === step;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'node-card' + (active ? ' active' : '') + (nd.dec ? ' decision' : '');
+      btn.setAttribute('aria-pressed', String(active));
+      btn.style.borderRadius = md.radius + 'px';
+      btn.style.borderColor = active ? md.accent : '';
+      btn.style.background = active ? md.soft : '';
+      btn.style.color = active ? md.accent : '';
+      const nodeIcon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>';
+      btn.innerHTML = `
+        <span class="node-icon" style="border-radius:${md.radius > 8 ? '50%' : '3px'};border-color:${active ? md.accent : ''};color:${active ? md.accent : ''}">${nodeIcon}</span>
+        <span class="node-text">
+          <span class="node-num">${nd.num}</span>
+          <span class="node-flow">${nd.flow}</span>
+        </span>`;
+      btn.addEventListener('click', () => {
+        state.step = i;
+        render();
+      });
+      diagramEl.appendChild(btn);
+
+      if (i < md.nodes.length - 1) {
+        const sep = document.createElement('span');
+        sep.className = 'node-sep';
+        sep.style.color = md.accent;
+        sep.textContent = isNarrow() ? '↓' : '→';
+        sep.setAttribute('aria-hidden', 'true');
+        diagramEl.appendChild(sep);
+      }
+    });
+
+    // detail
+    detailPanel.style.borderLeftColor = md.accent;
+    detailKicker.style.color = md.accent;
+    detailKicker.textContent = `STEP ${sel.num} · ${sel.flow}`;
+    detailQ.textContent = sel.q;
+    detailDesc.textContent = sel.desc;
+    if (sel.dec) {
+      decisionGrid.hidden = false;
+      decisionGrid.style.display = 'grid';
+      yesEl.textContent = sel.yes || '';
+      noEl.textContent = sel.no || '';
+    } else {
+      decisionGrid.hidden = true;
+      decisionGrid.style.display = 'none';
+    }
+
+    // loops
+    loopsTitleEl.textContent = md.loopsTitle;
+    loopsEl.innerHTML = '';
+    md.loops.forEach((l) => {
+      const row = document.createElement('div');
+      row.className = 'loop-row';
+      row.innerHTML = `<span class="loop-glyph" style="color:${md.accent}">↩</span><span>${l}</span>`;
+      loopsEl.appendChild(row);
+    });
+  }
+
+  tabBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    state.mode = btn.dataset.mode;
+    state.step = 0;
+    render();
+  });
+
+  window.addEventListener('resize', () => render());
+
+  render();
+</script>
+
+<style is:global>
+  /* This block is global (not scoped) because the tab bar, step diagram, and
+     detail/loops panels are populated by client-side JS after the initial
+     render — Astro's scoped-style attribute only lands on elements that exist
+     in the compiled template, so JS-created nodes need unscoped selectors to
+     be styled at all. Class names below are specific enough to stay isolated
+     to this component. */
+  .how-i-think {
+    position: relative;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: clamp(70px, 9vw, 140px) var(--page-pad);
+  }
+
+  .rule {
+    position: absolute;
+    left: var(--page-pad);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .inner {
+    padding-left: clamp(40px, 5vw, 72px);
+  }
+
+  .intro {
+    margin-bottom: clamp(26px, 3vw, 42px);
+  }
+
+  .intro .kicker {
+    margin-bottom: 22px;
+  }
+
+  .intro h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 56px);
+    line-height: 1.03;
+    letter-spacing: -0.015em;
+    max-width: 940px;
+  }
+
+  .intro .lead {
+    font-size: clamp(15px, 1.15vw, 17.5px);
+    line-height: 1.62;
+    color: var(--color-muted-2);
+    max-width: 720px;
+    margin-top: 18px;
+    text-wrap: pretty;
+  }
+
+  .tabs-wrap {
+    margin-bottom: 24px;
+  }
+
+  .tab-bar {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    max-width: 660px;
+  }
+
+  @media (min-width: 700px) {
+    .tab-bar {
+      gap: 0;
+      border: 1px solid var(--color-line);
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--color-bg-panel);
+      padding-bottom: 0;
+    }
+  }
+
+  .tab-indicator {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 33.3333%;
+    border-bottom: 2px solid transparent;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s, border-color 0.3s;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @media (min-width: 700px) {
+    .tab-indicator {
+      display: block;
+    }
+  }
+
+  .tab-btn {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 15px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: transparent;
+    color: var(--color-muted);
+    border: 1px solid rgba(26, 28, 27, 0.26);
+    flex: 0 0 auto;
+    transition: color 0.25s, border-color 0.25s, background 0.25s;
+  }
+
+  @media (min-width: 700px) {
+    .tab-btn {
+      flex: 1 1 0;
+      justify-content: center;
+      padding: 13px 12px;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  .tab-btn.active {
+    border-color: currentColor;
+  }
+
+  @media (min-width: 700px) {
+    .tab-btn.active {
+      border: none;
+    }
+  }
+
+  .tab-icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-faint);
+  }
+
+  .viewing-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .viewing-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+    padding: 8px 13px;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    transition: all 0.35s;
+  }
+
+  .viewing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .viewing-name {
+    font-weight: 500;
+  }
+
+  .mode-intro {
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    max-width: 640px;
+    text-wrap: pretty;
+    border-left: 2px solid transparent;
+    padding-left: 14px;
+    transition: opacity 0.3s;
+  }
+
+  .diagram {
+    margin: 4px 0 34px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px 6px;
+  }
+
+  .diagram.narrow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .node-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    width: 182px;
+    text-align: left;
+    border: 1px solid rgba(26, 28, 27, 0.22);
+    background: var(--color-bg);
+    color: var(--color-ink-soft);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, color 0.25s, transform 0.25s;
+    animation: dcFadeUp 0.5s both;
+  }
+
+  .diagram.narrow .node-card {
+    width: 100%;
+    font-size: 11px;
+    padding: 13px 14px;
+  }
+
+  .node-card.active {
+    transform: scale(1.03);
+  }
+
+  .node-card.decision {
+    border-style: dashed;
+    border-width: 1.4px;
+  }
+
+  .node-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(26, 28, 27, 0.2);
+    color: var(--color-muted);
+  }
+
+  .node-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .node-num {
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    color: var(--color-faint);
+  }
+
+  .node-card.active .node-num {
+    color: inherit;
+  }
+
+  .node-flow {
+    font-size: inherit;
+    letter-spacing: 0.03em;
+    line-height: 1.18;
+  }
+
+  .node-sep {
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+    font-size: 14px;
+    font-family: var(--font-mono);
+    opacity: 0.55;
+  }
+
+  .diagram.narrow .node-sep {
+    justify-content: center;
+    padding: 7px 0;
+    width: 100%;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 860px) {
+    .detail-grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    }
+  }
+
+  .detail-panel {
+    border-left: 2px solid transparent;
+    background: var(--color-bg-panel);
+    padding: 22px 24px;
+    border-radius: 2px;
+  }
+
+  .detail-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .detail-q {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(19px, 2vw, 25px);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin-bottom: 11px;
+  }
+
+  .detail-desc {
+    font-size: 15px;
+    line-height: 1.62;
+    color: var(--color-ink-soft);
+    text-wrap: pretty;
+  }
+
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  @media (min-width: 520px) {
+    .decision-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .decision-card {
+    border-radius: 2px;
+    padding: 12px 14px;
+  }
+
+  .decision-card.yes {
+    border: 1px solid rgba(59, 90, 67, 0.3);
+    border-left: 2px solid var(--color-green);
+    background: rgba(59, 90, 67, 0.05);
+  }
+
+  .decision-card.no {
+    border: 1px solid rgba(199, 91, 50, 0.3);
+    border-left: 2px solid var(--color-accent);
+    background: rgba(199, 91, 50, 0.05);
+  }
+
+  .decision-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .decision-card.yes .decision-label {
+    color: var(--color-green);
+  }
+
+  .decision-card.no .decision-label {
+    color: var(--color-accent);
+  }
+
+  .decision-card p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--color-muted-2);
+  }
+
+  .loops-panel {
+    border: 1px solid var(--color-line-soft);
+    border-radius: 2px;
+    padding: 22px 24px;
+  }
+
+  .loops-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    margin-bottom: 14px;
+  }
+
+  .loops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .loop-row {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-muted-2);
+  }
+
+  .loop-glyph {
+    flex-shrink: 0;
+  }
+</style>
