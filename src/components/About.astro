@@ -305,13 +305,13 @@ const collage = [
 </style>
 
 <script>
-  const collageTiles = document.querySelectorAll('.about .tile[data-index]');
-  const lightbox = document.querySelector('.about .lightbox');
-  const lightboxOverlay = document.querySelector('.about .lightbox-overlay');
-  const lightboxClose = document.querySelector('.about .lightbox-close');
-  const lightboxImage = document.querySelector('.about .lightbox-image');
-  const lightboxTitle = document.querySelector('#lightbox-title');
-  const lightboxDesc = document.querySelector('#lightbox-desc');
+  const collageTiles = document.querySelectorAll<HTMLElement>('.about .tile[data-index]');
+  const lightbox = document.querySelector<HTMLElement>('.about .lightbox');
+  const lightboxOverlay = document.querySelector<HTMLElement>('.about .lightbox-overlay');
+  const lightboxClose = document.querySelector<HTMLElement>('.about .lightbox-close');
+  const lightboxImage = document.querySelector<HTMLElement>('.about .lightbox-image');
+  const lightboxTitle = document.querySelector<HTMLElement>('#lightbox-title');
+  const lightboxDesc = document.querySelector<HTMLElement>('#lightbox-desc');
 
   const collageData = [
     {
@@ -341,9 +341,10 @@ const collage = [
     },
   ];
 
-  function openImageLightbox(index) {
+  function openImageLightbox(index: number) {
     const item = collageData[index];
     if (!item) return;
+    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxDesc) return;
     lightboxImage.style.backgroundImage = `url('${item.image}')`;
     lightboxTitle.textContent = item.label;
     lightboxDesc.textContent = item.desc;
@@ -352,6 +353,7 @@ const collage = [
   }
 
   function closeImageLightbox() {
+    if (!lightbox || !lightboxImage) return;
     lightbox.setAttribute('hidden', '');
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImage.style.backgroundImage = '';
@@ -365,11 +367,13 @@ const collage = [
   });
 
   [lightboxOverlay, lightboxClose].forEach((el) => {
-    el.addEventListener('click', closeImageLightbox);
+    if (el) {
+      el.addEventListener('click', closeImageLightbox);
+    }
   });
 
   window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !lightbox.hasAttribute('hidden')) {
+    if (lightbox && event.key === 'Escape' && !lightbox.hasAttribute('hidden')) {
       closeImageLightbox();
     }
   });
