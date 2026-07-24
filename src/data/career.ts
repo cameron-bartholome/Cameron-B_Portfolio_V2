@@ -30,6 +30,7 @@ export const careerStages: CareerStage[] = [
     active: false,
     title: 'Mechanical Design Engineer',
     org: 'Brabant Engineering · supporting high-tech ASML Design & Engineering projects',
+    period: 'Nov-2022 to Jun-2026',
     description:
       'Worked through the complete mechanical-design lifecycle, including requirements, concepts, calculations, tolerance analysis, GD&T, design reviews, risk and failure analysis, manufacturability, technical documentation, TPD, production support, and final release.',
     tags: ['REQUIREMENTS', 'CONCEPTS', 'ANALYSIS', 'DETAIL DESIGN', 'REVIEW', 'TPD', 'RELEASE'],

@@ -26,7 +26,13 @@ const {
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="page-loading">
+    <div id="page-loader" class="page-loader" aria-hidden="true">
+      <div class="page-loader-inner">
+        <span>Cameron.B</span>
+        <p>Always improving</p>
+      </div>
+    </div>
     <slot />
     <script>
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -64,6 +70,24 @@ const {
 
         document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => io.observe(el));
       }
+
+      const loaderStart = Date.now();
+      const minLoaderMs = 900;
+
+      window.addEventListener('load', () => {
+        window.scrollTo({ top: 0, left: 0 });
+        const loader = document.getElementById('page-loader');
+        if (!loader) return;
+
+        const elapsed = Date.now() - loaderStart;
+        const delay = Math.max(0, minLoaderMs - elapsed);
+
+        window.setTimeout(() => {
+          document.body.classList.remove('page-loading');
+          loader.classList.add('page-loader-hidden');
+          window.setTimeout(() => loader.remove(), 600);
+        }, delay);
+      });
     </script>
   </body>
 </html>

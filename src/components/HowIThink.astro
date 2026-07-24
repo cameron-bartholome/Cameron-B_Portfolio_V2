@@ -17,13 +17,13 @@ const modesData = {
       'Production or test feedback may return to Requirements or Engineering',
     ],
     nodes: [
-      { num: '01', flow: 'PROBLEM', q: 'What are we trying to solve?', desc: 'Understand the need, intended function, users, interfaces, constraints, and expected result.' },
-      { num: '02', flow: 'REQUIREMENTS', q: 'What must the design achieve?', desc: 'Turn the problem into clear functional, mechanical, safety, manufacturing, and documentation requirements.' },
-      { num: '03', flow: 'CONCEPTS', q: 'What options could work?', desc: 'Explore different concepts and compare their performance, feasibility, cost, complexity, and risk.' },
-      { num: '04', flow: 'ENGINEERING', q: 'How do we make it work properly?', desc: 'Develop the geometry, materials, calculations, interfaces, tolerances, GD&T, and manufacturing intent.' },
-      { num: '05', flow: 'REVIEW', q: 'What could go wrong?', desc: 'Review risks, possible failure modes, manufacturability, assembly, serviceability, and tolerance behaviour.' },
-      { num: '06', flow: 'RELEASE', q: 'Can someone else build it correctly?', desc: 'Complete the drawings, BOM, TPD, release information, and supporting technical documentation.' },
-      { num: '07', flow: 'SUPPORT & IMPROVE', q: 'What did we learn after release?', desc: 'Support testing and production, answer technical questions, review feedback, and improve the next design.' },
+      { num: '01', flow: 'PROBLEM', icon: 'target', q: 'What are we trying to solve?', desc: 'Understand the need, intended function, users, interfaces, constraints, and expected result.' },
+      { num: '02', flow: 'REQUIREMENTS', icon: 'checklist', q: 'What must the design achieve?', desc: 'Turn the problem into clear functional, mechanical, safety, manufacturing, and documentation requirements.' },
+      { num: '03', flow: 'CONCEPTS', icon: 'network', q: 'What options could work?', desc: 'Explore different concepts and compare their performance, feasibility, cost, complexity, and risk.' },
+      { num: '04', flow: 'ENGINEERING', icon: 'engine', q: 'How do we make it work properly?', desc: 'Develop the geometry, materials, calculations, interfaces, tolerances, GD&T, and manufacturing intent.' },
+      { num: '05', flow: 'REVIEW', icon: 'alert', q: 'What could go wrong?', desc: 'Review risks, possible failure modes, manufacturability, assembly, serviceability, and tolerance behaviour.' },
+      { num: '06', flow: 'RELEASE', icon: 'document', q: 'Can someone else build it correctly?', desc: 'Complete the drawings, BOM, TPD, release information, and supporting technical documentation.' },
+      { num: '07', flow: 'SUPPORT & IMPROVE', icon: 'refresh', q: 'What did we learn after release?', desc: 'Support testing and production, answer technical questions, review feedback, and improve the next design.' },
     ],
   },
   qualification: {
@@ -42,12 +42,12 @@ const modesData = {
       'Once verified, record the result and hand over clearly',
     ],
     nodes: [
-      { num: '01', flow: 'OBJECTIVE', q: 'What are we trying to prove?', desc: 'Understand the test objective, expected behaviour, and result that needs to be demonstrated.' },
-      { num: '02', flow: 'PREPARE', q: 'Is everything ready?', desc: 'Check the system state, procedure, tools, prerequisites, and safety conditions.' },
-      { num: '03', flow: 'RUN & OBSERVE', q: 'What is the machine doing?', desc: 'Run the test, observe the behaviour, and record what happens.' },
-      { num: '04', flow: 'INVESTIGATE', q: 'Where might the issue be?', desc: 'Investigate the symptoms, compare them with the expected behaviour, and involve the correct people where needed.' },
-      { num: '05', flow: 'RETEST & VERIFY', q: 'Did the action solve it?', desc: 'Retest the system and confirm whether it now performs as expected.' },
-      { num: '06', flow: 'RECORD & HAND OVER', q: 'What does the next person need to know?', desc: 'Record the result, actions, remaining concerns, and next steps in the logbook and shift handover.' },
+      { num: '01', flow: 'OBJECTIVE', icon: 'target', q: 'What are we trying to prove?', desc: 'Understand the test objective, expected behaviour, and result that needs to be demonstrated.' },
+      { num: '02', flow: 'PREPARE', icon: 'checklist', q: 'Is everything ready?', desc: 'Check the system state, procedure, tools, prerequisites, and safety conditions.' },
+      { num: '03', flow: 'RUN & OBSERVE', icon: 'waveform', q: 'What is the machine doing?', desc: 'Run the test, observe the behaviour, and record what happens.' },
+      { num: '04', flow: 'INVESTIGATE', icon: 'search', q: 'Where might the issue be?', desc: 'Investigate the symptoms, compare them with the expected behaviour, and involve the correct people where needed.' },
+      { num: '05', flow: 'RETEST & VERIFY', icon: 'check', q: 'Did the action solve it?', desc: 'Retest the system and confirm whether it now performs as expected.' },
+      { num: '06', flow: 'RECORD & HAND OVER', icon: 'document', q: 'What does the next person need to know?', desc: 'Record the result, actions, remaining concerns, and next steps in the logbook and shift handover.' },
     ],
   },
   personal: {
@@ -65,22 +65,23 @@ const modesData = {
       'An unexpected failure triggers deeper investigation',
     ],
     nodes: [
-      { num: '01', flow: 'INTERESTING IDEA', q: 'That looks interesting. Can I build it?', desc: 'Start with an idea, problem, or technology that seems worth exploring.' },
-      { num: '02', flow: 'ROUGH CONSTRAINTS', q: 'How difficult could it really be?', desc: 'Identify the obvious limits such as cost, time, tools, materials, space, safety, and performance.' },
-      { num: '03', flow: 'BREAK INTO SYSTEMS', q: 'What actually needs to work?', desc: 'Break the idea into mechanical, electronic, software, manufacturing, and user elements.' },
-      { num: '04', flow: 'QUICK PLAN', q: 'Make a plan. Not a perfect one.', desc: 'Choose an approach that is good enough to start learning from.' },
-      { num: '05', flow: 'BUILD', q: 'Build the first version.', desc: 'Create the CAD, print the parts, assemble the hardware, wire the electronics, or build the first software experiment.' },
-      { num: '06', flow: 'TEST', q: 'Will it work?', desc: 'Test it under realistic conditions and see what the project actually does.' },
+      { num: '01', flow: 'INTERESTING IDEA', icon: 'bulb', q: 'That looks interesting. Can I build it?', desc: 'Start with an idea, problem, or technology that seems worth exploring.' },
+      { num: '02', flow: 'ROUGH CONSTRAINTS', icon: 'ruler', q: 'How difficult could it really be?', desc: 'Identify the obvious limits such as cost, time, tools, materials, space, safety, and performance.' },
+      { num: '03', flow: 'BREAK INTO SYSTEMS', icon: 'grid', q: 'What actually needs to work?', desc: 'Break the idea into mechanical, electronic, software, manufacturing, and user elements.' },
+      { num: '04', flow: 'QUICK PLAN', icon: 'map', q: 'Make a plan. Not a perfect one.', desc: 'Choose an approach that is good enough to start learning from.' },
+      { num: '05', flow: 'BUILD', icon: 'pencil', q: 'Build the first version.', desc: 'Create the CAD, print the parts, assemble the hardware, wire the electronics, or build the first software experiment.' },
+      { num: '06', flow: 'TEST', icon: 'gauge', q: 'Will it work?', desc: 'Test it under realistic conditions and see what the project actually does.' },
       {
         num: '07',
         flow: 'FAIL OR LEARN',
+        icon: 'lightning',
         q: 'It failed. Was that the failure I expected?',
         desc: 'Compare the observed failure with the assumption. A knowingly imperfect prototype is fine, as long as the test still answers a question.',
         dec: true,
         yes: 'The assumption may have been correct, and the test still produced useful evidence. Record the lesson and improve the next version.',
         no: 'Something more interesting may be happening. Investigate the hidden interaction or unexpected failure mode, then try another version.',
       },
-      { num: '08', flow: 'CHANGE SOMETHING', q: 'Change something and try again.', desc: 'Improve one or more parts, record the lesson, and move into the next iteration.' },
+      { num: '08', flow: 'CHANGE SOMETHING', icon: 'refresh', q: 'Change something and try again.', desc: 'Improve one or more parts, record the lesson, and move into the next iteration.' },
     ],
   },
 };
@@ -152,9 +153,34 @@ const modeOrder = ['design', 'qualification', 'personal'] as const;
     personal: '<path d="M9.5 17.5h5M10.5 20.5h3M12 3a6 6 0 00-3.2 11.1c.7.5 1.2 1.2 1.2 2.1h4c0-.9.5-1.6 1.2-2.1A6 6 0 0012 3z"/>',
   };
 
+  const NODE_ICONS = {
+    target: '<circle cx="12" cy="12" r="3.2"/><path d="M12 4.5v3.5M12 16.5v3.5M4.5 12h3.5M16.5 12h3.5"/>',
+    checklist: '<path d="M7 9.5h10M7 13.5h5"/><path d="M7 5.5h10"/><rect x="4" y="7" width="16" height="10" rx="2"/>',
+    network: '<circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8.5 8.5l3 3M15.5 8.5l-3 3M12 9v6"/>',
+    engine: '<path d="M8 8h8v8H8z"/><path d="M10 8v-2M14 8v-2M10 18v2M14 18v2M8 10H5M8 14H5M19 10h-3M19 14h-3"/>',
+    alert: '<path d="M12 6.5v5M12 15.5h.01"/><path d="M5 19h14L12 5 5 19z" fill="none"/>',
+    document: '<path d="M7 4h7l4 4v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="none"/><path d="M12 4v4h4"/><path d="M9 12h6M9 15h6"/>',
+    refresh: '<path d="M6.5 9.5A7.5 7.5 0 0 1 12 4.5V2M17.5 14.5A7.5 7.5 0 0 1 12 19.5V22"/><path d="M6.5 9.5L4 7M17.5 14.5l2.5 2.5"/>',
+    waveform: '<path d="M4 14h3l2-8 4 16 2-8h3"/>',
+    search: '<circle cx="11" cy="11" r="4"/><path d="M15 15l4 4"/>',
+    check: '<path d="M7 12l3 3 7-7"/>',
+    bulb: '<path d="M12 4a5 5 0 0 0-2 9.5v1.5h4v-1.5A5 5 0 0 0 12 4z"/><path d="M10 17h4v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>',
+    ruler: '<path d="M6 5.5h12v13H6z" fill="none"/><path d="M9 8v2M12 8v2M15 8v2"/>',
+    grid: '<path d="M8 8h8M8 12h8M12 8v8"/><rect x="6" y="6" width="12" height="12" rx="2" fill="none"/>',
+    map: '<path d="M6 6.5l5 2.5 6-2.5v11l-6-2.5-5 2.5v-11z" fill="none"/><path d="M11 8.5v9M6 9l6 2.5 6-2.5"/>',
+    pencil: '<path d="M6 18.5L5 19l1.5-3.5 8-8L17.5 7l-8 8z" fill="none"/><path d="M14 6l4 4"/>',
+    gauge: '<path d="M4 14a8 8 0 1 1 16 0" fill="none"/><path d="M12 14v-4"/><path d="M12 10l3 1"/>',
+    lightning: '<path d="M13 5l-6 9h4l-2 7 6-9h-4l2-7z"/>',
+  };
+
   function iconSvg(name, size) {
     size = size || 17;
     return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ''}</svg>`;
+  }
+
+  function nodeIconSvg(name) {
+    const icon = NODE_ICONS[name] || '<circle cx="12" cy="12" r="3"/>';
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>`;
   }
 
   const state = { mode: 'design', step: 0 };
@@ -240,7 +266,7 @@ const modeOrder = ['design', 'qualification', 'personal'] as const;
       btn.style.borderColor = active ? md.accent : '';
       btn.style.background = active ? md.soft : '';
       btn.style.color = active ? md.accent : '';
-      const nodeIcon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>';
+      const nodeIcon = nodeIconSvg(nd.icon);
       btn.innerHTML = `
         <span class="node-icon" style="border-radius:${md.radius > 8 ? '50%' : '3px'};border-color:${active ? md.accent : ''};color:${active ? md.accent : ''}">${nodeIcon}</span>
         <span class="node-text">
@@ -545,6 +571,12 @@ const modeOrder = ['design', 'qualification', 'personal'] as const;
     justify-content: center;
     border: 1px solid rgba(26, 28, 27, 0.2);
     color: var(--color-muted);
+  }
+
+  .node-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
   }
 
   .node-text {
